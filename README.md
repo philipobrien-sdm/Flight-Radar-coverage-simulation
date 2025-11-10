@@ -13,8 +13,6 @@ Flight Radar Simulator is a strategic economic simulation game where you take on
 *   **True Radar Visibility:** Aircraft are only visible when within range of an active radar. When you lose contact, the aircraft's icon turns red, marking its last known position and incurring a higher financial penalty.
 *   **Live Dashboards:** Keep track of your entire operation with a detailed info panel for selected entities, a collapsible list of all your radar assets, and a central control panel for managing the simulation and your economy.
 
-## See it in Action
-*(A gameplay GIF or screenshot here would be perfect to show the game in action, with radars placed and aircraft being tracked.)*
 
 ## 🚀 Installation and Setup in Google AI Studio
 Follow these steps to download the code and run your own instance of the application in Google AI Studio.
