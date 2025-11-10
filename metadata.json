@@ -1,0 +1,5 @@
+{
+  "name": "Flight Radar Simulator Game",
+  "description": "An interactive air traffic control simulator over Europe. Place radars to detect flights from a dynamic pool of 20,000 possible routes. Zoom and pan the map to monitor aircraft as they realistically climb, cruise, and descend.",
+  "requestFramePermissions": []
+}
