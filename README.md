@@ -1,7 +1,7 @@
 # Radar Network Analysis Tool
 
 ## What is this Tool?
-The Radar Network Analysis Tool is a powerful strategic simulator designed to analyze the robustness, coverage, and financial viability of an airspace monitoring radar network. It allows users to visualize a dynamic airspace, simulate radar outages, and run high-speed, long-term analyses to identify network vulnerabilities, assess financial impact, and make informed infrastructure decisions.
+The Radar Network Analysis Tool is a powerful strategic simulator designed to analyze the robustness, coverage, and financial viability of an airspace monitoring radar network. It allows users to visualize a dynamic airspace, simulate radar outages, and run high-speed, long-term analyses to identify network vulnerabilities, assess financial impact, and make informed infrastructure decisions. While the whole exercise is a work of fiction, the basic ideas are interesting. 
 
 <img width="800" height="600" alt="Screenshot 2025-11-11 234330" src="https://github.com/user-attachments/assets/da9ca89e-f5ae-4e8d-8b3b-7219e9ef5793" />
 
