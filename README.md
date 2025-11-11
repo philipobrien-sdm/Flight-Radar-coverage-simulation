@@ -1,79 +1,69 @@
-# Rhetorical Analysis AI
+# Radar Network Analysis Tool
 
 ## What is this Tool?
-Rhetorical Analysis AI is a powerful tool designed to help you look "under the hood" of any text. It uses Google's Gemini AI to analyze how an argument is constructed, revealing the persuasive techniques, logical structures, and potential biases at play. Its goal is to foster critical thinking by showing you how a text works to convince you, not just what it says.
+The Radar Network Analysis Tool is a powerful strategic simulator designed to analyze the robustness, coverage, and financial viability of an airspace monitoring radar network. It allows users to visualize a dynamic airspace, simulate radar outages, and run high-speed, long-term analyses to identify network vulnerabilities, assess financial impact, and make informed infrastructure decisions.
 
 ## Core Features
-*   **Detailed Analysis:** A comprehensive breakdown of the text's thesis, key claims, persuasive techniques, and logical fallacies, complete with a "Rhetorical Heat" score and an interactive heat bar.
-*   **Multiple Perspectives:** Special tabs translate the analysis into simple terms for students, plain language for the average adult, and a neurodivergent-friendly format that uses literal language to explain social cues.
-*   **Conversation Heatmap:** If the text is a dialogue, the tool generates a visual heatmap to show where the conversation's intensity and persuasive pressure change.
-*   **Sculpt & Rewrite:** A generative feature that lets you rewrite the original text by adjusting sliders for tone, emotionality, and style.
+*   **Interactive Map Simulation:** Visualize a dynamic European airspace with airports, configurable radar sites, and hundreds of live aircraft following realistic flight paths.
+*   **Dynamic Outage Simulation:** Manually toggle individual radar stations on or off (by right-clicking or using the UI) to instantly see the impact on network coverage and live financial metrics.
+*   **High-Speed Analysis:** Run accelerated simulations for **1-Month** or **1-Year** periods to stress-test your network configuration against thousands of flights, generating a detailed report in seconds.
+*   **In-Depth Financial Reporting:** Generate comprehensive reports detailing financial performance (Profit & Loss), operational costs, and revenue, based on configurable parameters.
+*   **Operational Failure Analysis:** The simulation tracks and reports on critical failures, including flight cancellations due to lack of departure coverage and "loss-of-tracking" events for in-flight aircraft.
+*   **Strategic Optimization Tools:**
+    *   **Redundancy Finder:** Automatically runs a short simulation to identify the least critical radars, suggesting potential cost-saving deactivations with minimal impact on network integrity.
+    *   **"What-If" Analysis:** The report includes an analysis of currently inactive radars, estimating the potential financial gain if they were brought online.
+*   **Radar Scope View:** Open a detailed "PPI scope" for any active radar to see exactly which aircraft are within its range, distance, and bearing.
 
 ## 🚀 Installation and Setup in Google AI Studio
 Follow these steps to download the code and run your own instance of the application in Google AI Studio.
 
 ### Prerequisites
 *   **Google Account:** You need a Google account to use Google AI Studio.
-*   **Gemini API Key:** The application requires your own Gemini API key to function.
-    1.  Go to Google AI Studio.
-    2.  Click on "Get API key" in the top-left menu.
-    3.  Follow the instructions to create a new API key.
-    4.  Copy and save this key somewhere safe. You will need it in Step 3.
 
 ### Step 1: Download the Project from GitHub
-1.  On this GitHub repository page, click the green `< > Code` button.
+1.  On the project's GitHub repository page, click the green `< > Code` button.
 2.  In the dropdown menu, select "Download ZIP".
-3.  Save the ZIP file to your computer and unzip it. You will now have a folder named something like `rhetorical-analysis-ai-main`.
+3.  Save the ZIP file to your computer and unzip it. You will now have a folder named something like `radar-network-analyzer-main`.
 
 ### Step 2: Prepare the ZIP for AI Studio
-This is the most important step. AI Studio requires the `index.html` file to be at the top level of the zip file, but the GitHub download puts it inside a folder. You must re-zip the core files.
+This is a critical step. AI Studio requires the `index.html` file to be at the top level of the zip file, but the GitHub download puts it inside a folder. You must re-zip the core files.
 
-1.  **Open the folder.** Navigate inside the unzipped `rhetorical-analysis-ai-main` folder. You should see all the project files and folders (`index.html`, `App.tsx`, `components`, etc.).
-2.  **Select the application files.** Select all the files and folders inside this directory that are needed for the app.
-    *   Include:
+1.  **Open the project folder.** Navigate inside the unzipped `radar-network-analyzer-main` folder. You should see all the project files and folders (`index.html`, `App.tsx`, `components`, etc.).
+2.  **Select all application files.** Select all the files and folders inside this directory.
+    *   **Include:**
         *   `App.tsx`
         *   `components/` (folder)
-        *   `index.css`
+        *   `constants.ts`
+        *   `data/` (folder)
         *   `index.html`
         *   `index.tsx`
         *   `metadata.json`
-        *   `services/` (folder)
-        *   `types.ts`
         *   `README.md`
-    *   Do not go back up and select the parent folder. Stay inside the `rhetorical-analysis-ai-main` folder.
+        *   `types.ts`
+        *   `utils.ts`
+    *   Do not go back up and select the parent folder. Stay inside the `radar-network-analyzer-main` folder.
 3.  **Create the new ZIP file.** With all the app files selected, right-click and choose:
     *   **Windows:** "Send to" > "Compressed (zipped) folder".
     *   **Mac:** "Compress [X] items".
-4.  Rename the new ZIP file to something clear, like `aistudio-rhetorical-analysis-upload.zip`.
+4.  Rename the new ZIP file to something clear, like `aistudio-radar-analysis-upload.zip`.
 
 **CRITICAL:** By zipping the contents directly, you ensure that `index.html` is at the root of your new zip file, which is what AI Studio needs.
 
 ### Step 3: Upload and Run in AI Studio
 1.  **Go to the Google AI Studio App Gallery:** Open your web browser and navigate to `aistudio.google.com/app`.
 2.  **Create a New App:** Click "Create new" and select "Zip upload".
-3.  **Upload Your ZIP:** Select the `aistudio-rhetorical-analysis-upload.zip` file you created in the previous step. AI Studio will build the project and launch the application.
-4.  **Add Your API Key:**
-    1.  Once the project is loaded, locate the "Secrets" panel on the left-hand side (it looks like a key icon 🔑).
-    2.  Click "Add new secret".
-    3.  For the **Name**, enter `API_KEY` (this must be exact).
-    4.  For the **Value**, paste the Gemini API key you obtained in the Prerequisites step.
-    5.  Click **Save**.
+3.  **Upload Your ZIP:** Select the `aistudio-radar-analysis-upload.zip` file you created in the previous step. AI Studio will build the project and launch the application.
 
-Your application is now set up and ready to use!
+The application is now ready to use! No API key setup is required.
 
 ## 📖 How to Use This Tool
-1.  **Get Your Text:** Copy and paste any text (at least 200 characters) directly into the text area. You can also use the "Load an Example" dropdown to get started quickly.
-2.  **Analyze:** Give your analysis an optional title and click the "Run Generic Analysis" button. The AI will process the text and generate a multi-tabbed report.
-3.  **Explore the Report:** Use the tabs to explore the different analysis views, from the in-depth technical breakdown to the simplified explanations.
+1.  **Start:** Click the "Start Analysis" button on the welcome screen to load the default radar network.
+2.  **Observe:** Watch the live simulation of air traffic. Note the live metrics in the bottom control panel.
+3.  **Experiment:** Right-click a radar icon on the map or use the toggle button in the right-hand list to take it offline. Observe how airport coverage (green/red dots) and aircraft tracking status change in real-time.
+4.  **Stress Test:** Use the "50% Outage" button to simulate a random, large-scale failure scenario.
+5.  **Run Analysis:** Once you have a network configuration you want to test, click **"Run 1-Year Analysis"**.
+6.  **Review Report:** Analyze the summary of financial and operational metrics. Click "Download Full Report" for a detailed HTML file with breakdowns of problematic routes, high-impact radars, and more.
+7.  **Optimize:** Use the **"Find Redundant Radars"** tool for cost-saving insights. Deactivate the suggested radars and run another analysis to measure the impact.
 
-## Important Limitations: What This Tool Does NOT Do
-*   **It is NOT a fact-checker.** The tool analyzes the structure and style of an argument, not the truthfulness of its claims. A well-argued piece can still contain factual errors, and a poorly argued one may be factually correct.
-*   **The AI is not infallible.** While powerful, the AI can make mistakes, misinterpret nuance, or miss certain techniques. Use its analysis as a starting point for your own critical thinking, not as a final, definitive judgment.
-*   **Context is key.** The tool analyzes the text you provide in isolation. The broader context of who the author is, where it was published, and the ongoing cultural conversation is something you must still consider.
-
-## Our Goal
-The purpose of this tool is to empower you with the skills of critical consumption. By making the machinery of persuasion visible, we hope to help you become a more discerning reader, a more effective communicator, and a more engaged citizen.
-
-## 🔒 Privacy
-*   **API Key:** Your API key is managed securely by Google AI Studio's secrets manager and is never exposed in the client-side code.
-*   **User Data:** The optional user profile and all analysis history are stored only in your browser's local storage. This data is never transmitted to any server, except when you initiate a personalized analysis, where the profile is sent temporarily to the Gemini API for that single request.
+## Disclaimer
+This is a strategic modeling tool, not a real-time air traffic control system. Flight paths are simplified (great-circle routes) for performance and do not represent official airways or real-time flight data. All financial and operational data is procedurally generated for simulation purposes.
