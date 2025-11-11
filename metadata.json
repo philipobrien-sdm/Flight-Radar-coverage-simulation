@@ -1,5 +1,5 @@
 {
-  "name": "Flight Radar Simulator Game",
-  "description": "An interactive air traffic control simulator over Europe. Place radars to detect flights from a dynamic pool of 20,000 possible routes. Zoom and pan the map to monitor aircraft as they realistically climb, cruise, and descend.",
+  "name": "Radar Network Analysis Tool",
+  "description": "A tool to analyze the robustness of a radar network. Load predefined radar sites, simulate outages, and run a high-speed simulation over a year to identify coverage gaps, track flight cancellations, and log loss-of-tracking events.",
   "requestFramePermissions": []
 }

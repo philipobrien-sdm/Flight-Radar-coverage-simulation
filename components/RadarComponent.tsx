@@ -5,10 +5,10 @@ interface RadarComponentProps {
   radar: Radar;
   isSelected: boolean;
   onSelect: (id: string) => void;
-  onRightClick: (id: string) => void;
+  onToggleStatus: (id: string) => void;
 }
 
-const RadarComponent: React.FC<RadarComponentProps> = ({ radar, isSelected, onSelect, onRightClick }) => {
+const RadarComponent: React.FC<RadarComponentProps> = ({ radar, isSelected, onSelect, onToggleStatus }) => {
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     onSelect(radar.id);
@@ -17,7 +17,7 @@ const RadarComponent: React.FC<RadarComponentProps> = ({ radar, isSelected, onSe
   const handleRightClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    onRightClick(radar.id);
+    onToggleStatus(radar.id);
   }
 
   const centerColor = radar.isActive 
@@ -44,7 +44,7 @@ const RadarComponent: React.FC<RadarComponentProps> = ({ radar, isSelected, onSe
           boxShadow: isSelected ? `0 0 10px ${centerColor}` : 'none',
           transition: 'all 0.3s ease',
         }}
-        title={radar.name}
+        title={`${radar.name} (Right-click to toggle)`}
       ></div>
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1 h-1 bg-white rounded-full"></div>
     </div>

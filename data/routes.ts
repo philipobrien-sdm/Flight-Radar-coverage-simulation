@@ -1,44 +1,71 @@
-export interface Route {
-  from: string;
-  to: string;
-}
+import { FlightPlan } from '../types';
+import { airportsWithPositions } from './airports';
 
-const ROUTES: Route[] = [
-    { from: 'LHR', to: 'CDG' },
-    { from: 'LHR', to: 'FRA' },
-    { from: 'LHR', to: 'AMS' },
-    { from: 'LHR', to: 'MAD' },
-    { from: 'LHR', to: 'FCO' },
-    { from: 'CDG', to: 'FRA' },
-    { from: 'CDG', to: 'FCO' },
-    { from: 'CDG', to: 'BCN' },
-    { from: 'FRA', to: 'MAD' },
-    { from: 'FRA', to: 'IST' },
-    { from: 'AMS', to: 'BCN' },
-    { from: 'AMS', to: 'CPH' },
-    { from: 'MAD', to: 'LIS' },
-    { from: 'MAD', to: 'FCO' },
-    { from: 'FCO', to: 'ATH' },
-    { from: 'MUC', to: 'VIE' },
-    { from: 'MUC', to: 'ZRH' },
-    { from: 'IST', to: 'ATH' },
-    { from: 'DUB', to: 'LHR' },
-    { from: 'ZRH', to: 'FRA' },
-    { from: 'CPH', to: 'OSL' },
-    { from: 'OSL', to: 'ARN' },
-    { from: 'ARN', to: 'HEL' },
-    { from: 'WAW', to: 'FRA' },
-    { from: 'PRG', to: 'FRA' },
-    { from: 'VIE', to: 'BUD' },
-    { from: 'BRU', to: 'AMS' },
-    // New routes for new airports
-    { from: 'BER', to: 'WAW' },
-    { from: 'BER', to: 'MUC' },
-    { from: 'MXP', to: 'ZRH' },
-    { from: 'MXP', to: 'FCO' },
-    { from: 'LHR', to: 'BER' },
-    { from: 'CDG', to: 'MXP' },
-];
+// Procedurally generate a dense network of routes for a more realistic simulation.
+// This is not based on real-world data but creates a plausible set of connections.
+const majorHubs = new Set(['LHR', 'CDG', 'FRA', 'AMS', 'IST', 'MAD', 'BCN', 'MUC', 'LGW', 'FCO']);
+const secondaryHubs = new Set(['DUB', 'ZRH', 'CPH', 'OSL', 'ARN', 'VIE', 'ATH', 'LIS', 'BRU', 'MAN', 'MXP', 'WAW', 'PRG', 'DUS']);
 
-const reverseRoutes = ROUTES.map(r => ({ from: r.to, to: r.from }));
-export const ALL_ROUTES = [...ROUTES, ...reverseRoutes];
+const generatedPlans: FlightPlan[] = [];
+const addedPairs = new Set<string>();
+
+const addPlan = (from: string, to: string) => {
+    const key1 = `${from}-${to}`;
+    const key2 = `${to}-${from}`;
+    if (addedPairs.has(key1) || addedPairs.has(key2) || from === to) return;
+
+    generatedPlans.push({ from, to, frequency: '121.5' });
+    addedPairs.add(key1);
+    addedPairs.add(key2);
+};
+
+const allAirportCodes = new Set(airportsWithPositions.map(ap => ap.code));
+
+// 1. Connect all major hubs to each other
+majorHubs.forEach(hub1 => {
+    if (!allAirportCodes.has(hub1)) return;
+    majorHubs.forEach(hub2 => {
+        if (allAirportCodes.has(hub2)) addPlan(hub1, hub2);
+    });
+});
+
+// 2. Connect all major hubs to all secondary hubs
+majorHubs.forEach(major => {
+    if (!allAirportCodes.has(major)) return;
+    secondaryHubs.forEach(secondary => {
+        if (allAirportCodes.has(secondary)) addPlan(major, secondary);
+    });
+});
+
+// 3. Connect a good portion of secondary hubs to each other
+secondaryHubs.forEach(hub1 => {
+    if (!allAirportCodes.has(hub1)) return;
+    secondaryHubs.forEach(hub2 => {
+        if (allAirportCodes.has(hub2) && Math.random() > 0.6) {
+          addPlan(hub1, hub2);
+        }
+    });
+});
+
+// 4. Connect major and secondary hubs to a random selection of other airports
+airportsWithPositions.forEach(airport => {
+    const code = airport.code;
+    if (!majorHubs.has(code) && !secondaryHubs.has(code)) {
+        // Connect to 1-2 major hubs
+        majorHubs.forEach(hub => {
+            if (allAirportCodes.has(hub) && Math.random() < 0.2) {
+                addPlan(hub, code);
+            }
+        });
+        // Connect to 1-2 secondary hubs
+        secondaryHubs.forEach(hub => {
+            if (allAirportCodes.has(hub) && Math.random() < 0.15) {
+                addPlan(hub, code);
+            }
+        });
+    }
+});
+
+const FLIGHT_PLANS: FlightPlan[] = generatedPlans;
+const reverseRoutes = FLIGHT_PLANS.map(r => ({ from: r.to, to: r.from, frequency: r.frequency }));
+export const ALL_FLIGHT_PLANS = [...FLIGHT_PLANS, ...reverseRoutes];

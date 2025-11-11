@@ -1,32 +1,70 @@
+// FIX: Define all necessary types for the application.
 export interface Point {
   lat: number;
   lng: number;
 }
 
-export type AircraftVisibilityStatus = 'unseen' | 'visible' | 'lost';
-
-export interface Aircraft {
-  id: string;
-  flightNumber: string;
-  airline: string;
+export interface Airport {
+  code: string;
+  name: string;
   position: Point;
-  heading: number; // degrees
-  speed: number; // knots
-  altitude: number; // feet - calculated dynamically
-  cruisingAltitude: number; // feet - target cruise altitude
-  origin: string; // airport code
-  destination: string; // airport code
-  route: { from: Point, to: Point };
-  progress: number; // 0 to 1
-  visibilityStatus: AircraftVisibilityStatus;
+  isCovered: boolean;
+  lat: number;
+  lon: number;
 }
 
 export interface Radar {
   id: string;
-  name: string;
+  name:string;
   position: Point;
-  range: number; // in nautical miles
+  range: number; // nautical miles
   isActive: boolean;
-  timeToReactivate: number; // in game seconds
-  supportedIncome: number; // in € per game hour
+  reactivationTime?: number;
+}
+
+export interface Aircraft {
+  id: string;
+  flightNumber: string;
+  origin: string;
+  destination: string;
+  position: Point;
+  altitude: number; // feet
+  speed: number; // knots
+  heading: number; // degrees
+  visibilityStatus: 'tracked' | 'lost';
+  progress: number; // 0 to 1
+  totalDistance: number;
+  startTime: number; // in hours from simulation start
+}
+
+export interface FlightPlan {
+  from: string; // airport code
+  to: string; // airport code
+  frequency: string;
+}
+
+export interface SimulationResult {
+  totalFlights: number;
+  totalDays: number;
+  
+  // High level metrics
+  cancelledFlights: number;
+  totalFlightsWithLostTracking: number;
+  lostFlightMinutes: number;
+
+  // Detailed breakdowns for the report
+  cancellationSources: { airportCode: string; cancellations: number }[];
+  maintenanceImpact: { radarName: string; outages: number; downtimeHours: number }[];
+  problematicRoutes: { route: string; lostMinutes: number }[];
+  redundancyAnalysis: { radarName: string; soleCoverageMinutes: number }[];
+
+  // Financial Metrics
+  totalRevenue: number;
+  totalOperationalCost: number;
+  totalCancellationCost: number;
+  totalLostTrackingCost: number;
+  netProfitLoss: number;
+
+  // "What-if" analysis for inactive radars
+  inactiveRadarAnalysis: { radarName: string; potentialPnlChange: number }[];
 }

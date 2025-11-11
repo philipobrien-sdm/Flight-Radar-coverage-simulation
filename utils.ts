@@ -1,5 +1,5 @@
-import { Point } from './types';
-import { Airport, airportsWithPositions } from './data/airports';
+import { Point, Airport } from './types';
+import { airportsWithPositions } from './data/airports';
 
 // Linear interpolation for a single number
 export const lerp = (a: number, b: number, t: number): number => {

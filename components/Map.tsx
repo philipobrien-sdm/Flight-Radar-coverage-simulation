@@ -1,8 +1,10 @@
+
 import React, { useCallback, useMemo } from 'react';
 import { GoogleMap, useJsApiLoader, OverlayView, Circle } from '@react-google-maps/api';
-import { Aircraft, Point, Radar } from '../types';
+import { Aircraft, Airport, Point, Radar } from '../types';
 import AircraftComponent from './AircraftComponent';
 import RadarComponent from './RadarComponent';
+import AirportComponent from './AirportComponent';
 
 // FIX: Define minimal google.maps types to resolve namespace errors when @types/google.maps is not installed.
 declare namespace google {
@@ -31,7 +33,6 @@ const containerStyle = {
 };
 
 const mapOptions: google.maps.MapOptions = {
-  disableDefaultUI: true,
   zoomControl: true,
   mapTypeControl: false,
   streetViewControl: false,
@@ -141,13 +142,13 @@ interface MapProps {
   zoom: number;
   aircrafts: Aircraft[];
   radars: Radar[];
+  airports: Airport[];
   selectedAircraftId: string | null;
   selectedRadarId: string | null;
-  onMapRightClick: (point: Point) => void;
   onSelectAircraft: (id: string) => void;
   onSelectRadar: (id: string) => void;
   onDeselect: () => void;
-  onRemoveRadar: (id: string) => void;
+  onToggleRadarStatus: (id: string) => void;
 }
 
 const MapComponent: React.FC<MapProps> = ({
@@ -156,13 +157,13 @@ const MapComponent: React.FC<MapProps> = ({
   zoom,
   aircrafts,
   radars,
+  airports,
   selectedAircraftId,
   selectedRadarId,
-  onMapRightClick,
   onSelectAircraft,
   onSelectRadar,
   onDeselect,
-  onRemoveRadar,
+  onToggleRadarStatus,
 }) => {
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
@@ -172,12 +173,6 @@ const MapComponent: React.FC<MapProps> = ({
   const handleMapClick = useCallback(() => {
     onDeselect();
   }, [onDeselect]);
-
-  const handleMapRightClick = useCallback((e: google.maps.MapMouseEvent) => {
-    if (e.latLng) {
-      onMapRightClick({ lat: e.latLng.lat(), lng: e.latLng.lng() });
-    }
-  }, [onMapRightClick]);
 
   const memoizedCenter = useMemo(() => ({ lat: center.lat, lng: center.lng }), [center.lat, center.lng]);
 
@@ -190,9 +185,13 @@ const MapComponent: React.FC<MapProps> = ({
       zoom={zoom}
       options={mapOptions}
       onClick={handleMapClick}
-      onRightClick={handleMapRightClick}
     >
       <>
+        {airports.map(airport => (
+          <CustomOverlayView key={airport.code} position={airport.position}>
+            <AirportComponent airport={airport} />
+          </CustomOverlayView>
+        ))}
         {radars.map(radar => (
           <React.Fragment key={radar.id}>
             <CustomOverlayView position={radar.position}>
@@ -200,7 +199,7 @@ const MapComponent: React.FC<MapProps> = ({
                 radar={radar}
                 isSelected={selectedRadarId === radar.id}
                 onSelect={onSelectRadar}
-                onRightClick={onRemoveRadar}
+                onToggleStatus={onToggleRadarStatus}
               />
             </CustomOverlayView>
             <Circle

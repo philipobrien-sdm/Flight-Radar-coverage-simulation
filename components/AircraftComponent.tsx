@@ -28,7 +28,7 @@ const AircraftComponent: React.FC<AircraftProps> = ({ aircraft, isSelected, onSe
     >
       <AircraftIcon className={`w-5 h-5 ${color} transition-colors duration-300`} 
         style={{ 
-          transform: `rotate(${aircraft.heading || 0}deg)`,
+          transform: `rotate(${aircraft.heading - 90}deg)`, // Corrects for SVG's default rightward orientation
           filter: isSelected ? `drop-shadow(0 0 5px #06b6d4)` : 'none'
         }}
       />

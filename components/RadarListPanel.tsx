@@ -5,11 +5,16 @@ interface RadarListPanelProps {
   radars: Radar[];
   selectedRadarId: string | null;
   onSelectRadar: (id: string) => void;
-  onCenterMap: (position: { lat: number, lng: number }) => void; // Placeholder
+  onToggleRadarStatus: (id: string) => void;
 }
 
-const RadarListPanel: React.FC<RadarListPanelProps> = ({ radars, selectedRadarId, onSelectRadar, onCenterMap }) => {
+const RadarListPanel: React.FC<RadarListPanelProps> = ({ radars, selectedRadarId, onSelectRadar, onToggleRadarStatus }) => {
   const [isExpanded, setIsExpanded] = useState(true);
+  
+  const handleToggleClick = (e: React.MouseEvent, id: string) => {
+    e.stopPropagation();
+    onToggleRadarStatus(id);
+  }
 
   if (!isExpanded) {
     return (
@@ -17,6 +22,7 @@ const RadarListPanel: React.FC<RadarListPanelProps> = ({ radars, selectedRadarId
         <button 
           onClick={() => setIsExpanded(true)}
           className="bg-gray-900/70 backdrop-blur-sm border border-gray-700/50 rounded-lg p-2 text-gray-300 hover:bg-gray-800/80"
+          aria-label="Expand Radar List"
         >
           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" />
@@ -32,35 +38,37 @@ const RadarListPanel: React.FC<RadarListPanelProps> = ({ radars, selectedRadarId
         <h2 className="text-lg font-bold text-cyan-400">
           Radar Network ({radars.length})
         </h2>
-        <button onClick={() => setIsExpanded(false)} className="text-gray-500 hover:text-gray-300">&times;</button>
+        <button onClick={() => setIsExpanded(false)} className="text-gray-500 hover:text-gray-300 text-2xl leading-none" aria-label="Collapse Radar List">&times;</button>
       </div>
       {radars.length === 0 ? (
-        <p className="text-gray-500">No radars deployed. Right-click the map to place a new radar.</p>
+        <p className="text-gray-500">No radars loaded. Use the control panel to load a radar set.</p>
       ) : (
         <ul className="space-y-2 max-h-96 overflow-y-auto">
           {radars.map(radar => (
             <li
               key={radar.id}
               onClick={() => onSelectRadar(radar.id)}
-              className={`p-2 rounded-md cursor-pointer transition-colors duration-200 ${
+              className={`p-2 rounded-md cursor-pointer transition-colors duration-200 flex justify-between items-center ${
                 selectedRadarId === radar.id 
                   ? 'bg-cyan-500/30 border border-cyan-400' 
                   : 'bg-gray-800/50 hover:bg-gray-700/50'
               }`}
             >
-              <div className="flex justify-between items-center">
+              <div>
                 <span className="font-semibold text-gray-200">{radar.name}</span>
-                {radar.isActive ? (
-                  <span className="text-xs font-bold text-green-400 bg-green-900/50 px-2 py-0.5 rounded-full">ACTIVE</span>
-                ) : (
-                  <span className="text-xs font-bold text-red-400 bg-red-900/50 px-2 py-0.5 rounded-full">OFFLINE</span>
-                )}
+                 <div className={`text-xs font-bold ${radar.isActive ? 'text-green-400' : 'text-red-400'}`}>
+                  {radar.isActive ? 'ONLINE' : 'OFFLINE'}
+                 </div>
               </div>
-              {!radar.isActive && (
-                <div className="text-xs text-yellow-500 mt-1">
-                  Repairing... ({Math.ceil(radar.timeToReactivate)}s left)
-                </div>
-              )}
+              <button 
+                onClick={(e) => handleToggleClick(e, radar.id)} 
+                title={radar.isActive ? "Take Offline" : "Bring Online"}
+                className={`w-8 h-8 flex items-center justify-center rounded-full transition-colors ${radar.isActive ? 'text-green-400 hover:bg-gray-700' : 'text-red-400 hover:bg-gray-700'}`}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5.636 5.636a9 9 0 1012.728 0M12 3v9" />
+                </svg>
+              </button>
             </li>
           ))}
         </ul>
